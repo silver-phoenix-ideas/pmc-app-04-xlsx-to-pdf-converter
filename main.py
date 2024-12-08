@@ -64,5 +64,11 @@ for filepath in filepaths:
 
     pdf.ln(16)
 
+    # Summary Text
+    pdf.set_font("Times", "B", 12)
+    pdf.cell(0, 8, "Total cost is {:.2f}".format(total_cost), 0, 1)
+    pdf.cell(24, 8, "PythonHow")
+    pdf.image("pythonhow.png", h=6)
+
     # Output File
     pdf.output(f"files/pdf/{filename}.pdf")
