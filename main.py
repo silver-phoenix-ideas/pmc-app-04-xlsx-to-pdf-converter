@@ -27,6 +27,7 @@ for filepath in filepaths:
     invoice_number, invoice_date = filename.split("-")
     df = pd.read_excel(filepath)
     column_titles = [column.replace("_", " ").title() for column in df.columns]
+    total_cost = df["total_price"].sum()
 
     # Document
     pdf = FPDF("portrait", "mm", paper["format"])
@@ -53,6 +54,15 @@ for filepath in filepaths:
             components.table_cell(pdf, content, settings, 8)
 
         pdf.ln()
+
+    # Invoice Total
+    for index, settings in enumerate(column_settings, start=1):
+        if index != len(column_settings):
+            components.table_cell(pdf, "", settings, 8)
+        else:
+            components.table_cell(pdf, total_cost, settings, 8)
+
+    pdf.ln(16)
 
     # Output File
     pdf.output(f"files/pdf/{filename}.pdf")
