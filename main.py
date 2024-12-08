@@ -6,6 +6,14 @@ from fpdf import FPDF
 import modules.pdf_helper as pdf_helper
 import modules.components as components
 
+# Sizes
+base = 8
+line_height = base
+title_size = int(base * 2)
+summary_size = int(base * 1.5)
+item_size = int(base * 1.25)
+image_size = int(base * 0.75)
+
 paper = pdf_helper.get_paper("A4")
 area = pdf_helper.calculate_area(paper)
 
@@ -34,41 +42,41 @@ for filepath in filepaths:
     pdf.add_page()
 
     # Page Titles
-    pdf.set_font("Times", "B", 16)
-    pdf.cell(0, 8, f"Invoice: #{invoice_number}", 0, 1)
-    pdf.cell(0, 8, f"Date: {invoice_date}", 0, 1)
-    pdf.ln(8)
+    pdf.set_font("Times", "B", title_size)
+    pdf.cell(0, line_height, f"Invoice: #{invoice_number}", 0, 1)
+    pdf.cell(0, line_height, f"Date: {invoice_date}", 0, 1)
+    pdf.ln(line_height)
 
     # Table Headers
-    pdf.set_font("Times", "B", 10)
+    pdf.set_font("Times", "B", item_size)
 
     for title, settings in zip(column_titles, column_settings):
-        components.table_header(pdf, title, settings, 8)
+        components.table_header(pdf, title, settings, line_height)
 
     pdf.ln()
 
     # Invoice Items
-    pdf.set_font("Times", "", 10)
+    pdf.set_font("Times", "", item_size)
     for index, row in df.iterrows():
         for content, settings in zip(row, column_settings):
-            components.table_cell(pdf, content, settings, 8)
+            components.table_cell(pdf, content, settings, line_height)
 
         pdf.ln()
 
     # Invoice Total
     for index, settings in enumerate(column_settings, start=1):
         if index != len(column_settings):
-            components.table_cell(pdf, "", settings, 8)
+            components.table_cell(pdf, "", settings, line_height)
         else:
-            components.table_cell(pdf, total_cost, settings, 8)
+            components.table_cell(pdf, total_cost, settings, line_height)
 
-    pdf.ln(16)
+    pdf.ln(line_height * 2)
 
     # Summary Text
-    pdf.set_font("Times", "B", 12)
-    pdf.cell(0, 8, "Total cost is {:.2f}".format(total_cost), 0, 1)
-    pdf.cell(24, 8, "PythonHow")
-    pdf.image("pythonhow.png", h=6)
+    pdf.set_font("Times", "B", summary_size)
+    pdf.cell(0, line_height, "Total cost is {:.2f}".format(total_cost), 0, 1)
+    pdf.cell(summary_size * 2, line_height, "PythonHow")
+    pdf.image("pythonhow.png", h=image_size)
 
     # Output File
     pdf.output(f"files/pdf/{filename}.pdf")
