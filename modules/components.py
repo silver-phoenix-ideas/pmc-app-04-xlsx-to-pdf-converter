@@ -11,7 +11,8 @@ def table_header(
         w=settings["width"],
         h=line_height,
         txt=title,
-        border=1
+        border=1,
+        align=settings["align"]
     )
 
 
@@ -25,7 +26,8 @@ def table_cell(
         w=settings["width"],
         h=line_height,
         txt=format_content(content, settings["data_type"]),
-        border=1
+        border=1,
+        align=settings["align"]
     )
 
 
