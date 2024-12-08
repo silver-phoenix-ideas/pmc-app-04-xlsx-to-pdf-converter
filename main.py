@@ -1,8 +1,10 @@
 # Imports
 import glob
 import pathlib
+import pandas as pd
 from fpdf import FPDF
 import modules.pdf_helper as pdf_helper
+import modules.components as components
 
 paper = pdf_helper.get_paper("A4")
 area = pdf_helper.calculate_area(paper)
@@ -23,6 +25,8 @@ for filepath in filepaths:
     # Data
     filename = pathlib.Path(filepath).stem
     invoice_number, invoice_date = filename.split("-")
+    df = pd.read_excel(filepath)
+    column_titles = [column.replace("_", " ").title() for column in df.columns]
 
     # Document
     pdf = FPDF("portrait", "mm", paper["format"])
@@ -37,8 +41,8 @@ for filepath in filepaths:
     # Table Headers
     pdf.set_font("Times", "B", 10)
 
-    for index, settings in enumerate(column_settings, start=1):
-        pdf.cell(settings["width"], 8, f"Column {index}", 1)
+    for title, settings in zip(column_titles, column_settings):
+        components.table_header(pdf, title, settings, 8)
 
     pdf.ln()
 
