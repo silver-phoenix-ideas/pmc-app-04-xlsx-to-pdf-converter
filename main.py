@@ -46,5 +46,13 @@ for filepath in filepaths:
 
     pdf.ln()
 
+    # Invoice Items
+    pdf.set_font("Times", "", 10)
+    for index, row in df.iterrows():
+        for content, settings in zip(row, column_settings):
+            components.table_cell(pdf, content, settings, 8)
+
+        pdf.ln()
+
     # Output File
     pdf.output(f"files/pdf/{filename}.pdf")
