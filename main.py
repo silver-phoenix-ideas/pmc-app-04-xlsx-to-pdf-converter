@@ -10,11 +10,11 @@ paper = pdf_helper.get_paper("A4")
 area = pdf_helper.calculate_area(paper)
 
 columns = [
-    {"ratio": 1},
-    {"ratio": 2.5},
-    {"ratio": 1.5},
-    {"ratio": 1.5},
-    {"ratio": 1.5},
+    {"ratio": 1, "data_type": "number"},
+    {"ratio": 2.5, "data_type": "string"},
+    {"ratio": 1.5, "data_type": "number"},
+    {"ratio": 1.5, "data_type": "currency"},
+    {"ratio": 1.5, "data_type": "currency"},
 ]
 
 column_settings = pdf_helper.get_column_settings(area, columns)
